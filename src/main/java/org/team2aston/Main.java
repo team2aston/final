@@ -2,10 +2,7 @@ package org.team2aston;
 
 public class Main {
     static void main() {
-        IO.println("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            IO.println("i = " + i);
-        }
+        Application app = new Application();
+        app.run();
     }
 }
