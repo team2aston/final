@@ -76,4 +76,27 @@ public class Employee implements Comparable<Employee> {
         return String.format("Employee{name='%s', department=%s, salary=%.2f}",
                 name, department.getDisplayName(), salary);
     }
+    public static class Comparators {
+        public static Comparator<Employee> byName = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee e1, Employee e2) {
+                return e1.getName().compareTo(e2.getName());
+            }
+        };
+
+        public static Comparator<Employee> bySalary = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee e1, Employee e2) {
+                return Double.compare(e1.getSalary(), e2.getSalary());
+            }
+        };
+
+        public static Comparator<Employee> byDepartment = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee e1, Employee e2) {
+                return e1.getDepartment().getDisplayName().compareTo(e2.getDepartment().getDisplayName());
+            }
+        };
+    }
+
 }
