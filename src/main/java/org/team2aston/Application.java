@@ -1,15 +1,11 @@
 package org.team2aston;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
-    /* классы для реализации функций
-    private final DataManager dataManager;
-    private final SortingManager sortingManager;
-    private final SearchManager searchManager;
-    private final FileManager fileManager;
-     */
+    private List<Employee> employees; //список для загрузки из файла, сортировки и сохранения в файл
 
     public void run() {
         System.out.println("Starting sorting application...");
@@ -41,26 +37,61 @@ public class Application {
 
         switch (option) {
             case INPUT_DATA -> {
-                //ввод данных из фала
+                //ввод данных из файла
+                //вызов обработчика ввода из файла
                 System.out.println("Status: STUB - functionality in development");
                 System.out.println("============================\n");
             }
             case SORT -> {
                 //сортировка
+                //вызов обработчика сотрировки
                 System.out.println("Status: STUB - functionality in development");
                 System.out.println("============================\n");
             }
             case SEARCH -> {
                 //поиск
+                //вызов обработчика поиска
                 System.out.println("Status: STUB - functionality in development");
                 System.out.println("============================\n");
             }
             case SAVE_TO_FILE -> {
                 //сохранение в файл
-                System.out.println("Status: STUB - functionality in development");
-                System.out.println("============================\n");
+                // ДОП ЗАДАНИЕ 2
+                handleSaveToFile();
             }
         }
+    }
+
+    /*
+    Обработчик сохранения в файл
+     */
+    private void handleSaveToFile() {
+        if (employees == null || employees.isEmpty()) {
+            System.out.println("No data available. Please input data first.");
+            System.out.println("============================\n");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter filename (default: employees.txt): ");
+        String filename = scanner.nextLine().trim();
+
+        //указан путь к файлу?
+        if (filename.isEmpty()) {
+            filename = "employees.txt";
+        }
+
+        //добавление описания к данным
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine().trim();
+        if (description.isEmpty()) {
+            description = "Employee data";
+        }
+
+        // ВЫЗОВ МЕТОДА ДОБАВЛЕНИЯ В ФАЙЛ
+        FileManager.appendToFile(employees, filename, description);
+        System.out.println("============================\n");
     }
 
     private MenuOption showMenuAndGetChoice() {
