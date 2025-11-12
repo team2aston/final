@@ -7,18 +7,19 @@ import java.util.Scanner;
 
 public class Validator {
     public static int getValidatedInput(int min, int max) {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            try {
-                System.out.print("\nInput: ");
-                int input = scanner.nextInt();
-                if (input >= min && input <= max) {
-                    return input;
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                try {
+                    System.out.print("\nInput: ");
+                    int input = scanner.nextInt();
+                    if (input >= min && input <= max) {
+                        return input;
+                    }
+                    System.out.println("Please enter number from " + min + " to " + max);
+                } catch (InputMismatchException e) {
+                    System.out.println("Error: please enter valid number!");
+                    scanner.nextLine();
                 }
-                System.out.println("Please enter number from " + min + " to " + max);
-            } catch (InputMismatchException e) {
-                System.out.println("Error: please enter valid number!");
-                scanner.nextLine();
             }
         }
 

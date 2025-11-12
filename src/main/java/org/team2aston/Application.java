@@ -8,9 +8,10 @@ import org.team2aston.Input.Validator;
 
 public class Application {
     private final InputManager inputManager = new InputManager();
-    private List<Employee> employees; //список для загрузки из файла, сортировки и сохранения в файл
+    // Список для загрузки из файла, сортировки и сохранения в файл
+    private List<Employee> employees;
 
-    /* классы для реализации функций
+    /* Классы для реализации функций
     private final SortingManager sortingManager;
     private final SearchManager searchManager;
     private final FileManager fileManager;
@@ -28,7 +29,7 @@ public class Application {
                     break;
                 }
 
-                //вызов выполнения наших операций из вывода консоли
+                // Вызов выполнения наших операций из вывода консоли
                 executeOption(option);
 
             } catch (Exception e) {
@@ -38,7 +39,7 @@ public class Application {
     }
 
     /*
-    здесь взависимости от выбранной опции выполняется выбранная операция
+    В зависимости от выбранной опции выполняется выбранная операция
      */
     private void executeOption(MenuOption option) {
         System.out.println("\n=== SELECTED OPTION ===");
@@ -46,28 +47,29 @@ public class Application {
 
         switch (option) {
             case INPUT_DATA -> {
-                //ввод данных из файла
-                //вызов обработчика ввода из файла
+                // Ввод данных из файла
+                // Вызов обработчика ввода из файла
                 employees = inputManager.fillEmployeeList();
                 System.out.println("============================\n");
             }
             case SORT -> {
-                //сортировка
-                //вызов обработчика сотрировки
+                // Сортировка
+                // Вызов обработчика сортировки
                 System.out.println("Status: STUB - functionality in development");
                 System.out.println("============================\n");
             }
             case SEARCH -> {
-                //поиск
-                //вызов обработчика поиска
+                // Поиск
+                // Вызов обработчика поиска
                 System.out.println("Status: STUB - functionality in development");
                 System.out.println("============================\n");
             }
             case SAVE_TO_FILE -> {
-                //сохранение в файл
-                // ДОП ЗАДАНИЕ 2
+                // Сохранение в файл
+                // Дополнительное задание № 2
                 handleSaveToFile();
             }
+            default -> throw new IllegalArgumentException("Unexpected value: " + option);
         }
     }
 
@@ -81,25 +83,26 @@ public class Application {
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Enter filename (default: employees.txt): ");
+            String filename = scanner.nextLine().trim();
 
-        System.out.print("Enter filename (default: employees.txt): ");
-        String filename = scanner.nextLine().trim();
+            // Указан путь к файлу?
+            if (filename.isEmpty()) {
+                filename = "employees.txt";
+            }
 
-        //указан путь к файлу?
-        if (filename.isEmpty()) {
-            filename = "employees.txt";
+            // Добавление описания к данным
+            System.out.print("Enter description: ");
+            String description = scanner.nextLine().trim();
+            if (description.isEmpty()) {
+                description = "Employee data";
+            }
+
+            // Вызов метода добавления в файл
+            FileManager.appendToFile(employees, filename, description);
         }
 
-        //добавление описания к данным
-        System.out.print("Enter description: ");
-        String description = scanner.nextLine().trim();
-        if (description.isEmpty()) {
-            description = "Employee data";
-        }
-
-        // ВЫЗОВ МЕТОДА ДОБАВЛЕНИЯ В ФАЙЛ
-        FileManager.appendToFile(employees, filename, description);
         System.out.println("============================\n");
     }
 

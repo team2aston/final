@@ -1,4 +1,4 @@
-package main.java.org.team2aston;
+package org.team2aston.SearchManager;
 
 /*
 Класс подсчета вхождения объекта
@@ -6,6 +6,7 @@ package main.java.org.team2aston;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.LongAdder;
@@ -15,15 +16,14 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SearchManager<T> {
 
     private final Lock collectionLock = new ReentrantLock(true);
-    private final int THREAD_COUNT = 8;
 
     public int count(Iterator<T> collection, T item) {
-        return count(collection, item, (o1, o2) -> o1.equals(o2) ? 0 : -1);
+        return count(collection, item, (o1, o2) -> Objects.equals(o1, o2) ? 0 : 1);
     }
-
 
     public int count(Iterator<T> collection, T item, Comparator<T> comparator) {
         LongAdder entranceCounter = new LongAdder();
+        int THREAD_COUNT = 8;
         try (ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_COUNT)) {
             threadPool.execute(() -> countUntilEnd(collection, item, comparator, entranceCounter));
         }

@@ -1,7 +1,7 @@
 package org.team2aston;
 
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
         Application app = new Application();
         app.run();
     }

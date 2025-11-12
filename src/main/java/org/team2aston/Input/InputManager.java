@@ -1,6 +1,5 @@
 package org.team2aston.Input;
 
-import org.team2aston.Department;
 import org.team2aston.Employee;
 
 import java.io.IOException;
@@ -41,23 +40,24 @@ public class InputManager {
      */
     private List<Employee> fillFromFile() throws IOException {
         System.out.println("\nFile path");
-        Scanner consoleReader = new Scanner(System.in);
-        String path = consoleReader.nextLine();
+        try (Scanner consoleReader = new Scanner(System.in)) {
+            String path = consoleReader.nextLine();
 
-        List<Employee> employees;
-        try (Scanner fileReader = new Scanner(Files.newInputStream(Path.of(path)))) {
-            employees = new ArrayList<>();
-            while (fileReader.hasNext()) {
-                Employee.Builder employee = new Employee.Builder();
+            List<Employee> employees;
+            try (Scanner fileReader = new Scanner(Files.newInputStream(Path.of(path)))) {
+                employees = new ArrayList<>();
+                while (fileReader.hasNext()) {
+                    Employee.Builder employee = new Employee.Builder();
 
-                employee.name(Validator.validateName(fileReader.nextLine(), MIN_NAME_SIZE, MAX_NAME_SIZE));
-                employee.department(Validator.validateDepartment(fileReader.nextLine()));
-                employee.salary(Validator.validateSalary(fileReader.nextLine(), MAX_SALARY_SIZE));
+                    employee.name(Validator.validateName(fileReader.nextLine(), MIN_NAME_SIZE, MAX_NAME_SIZE));
+                    employee.department(Validator.validateDepartment(fileReader.nextLine()));
+                    employee.salary(Validator.validateSalary(fileReader.nextLine(), MAX_SALARY_SIZE));
 
-                employees.add(employee.build());
+                    employees.add(employee.build());
+                }
             }
+            return employees;
         }
-        return employees;
     }
 
     private List<Employee> fillFromConsole() throws IOException {
@@ -65,22 +65,22 @@ public class InputManager {
         int size = Validator.getValidatedInput(0, MAX_NUMBER_OF_EMPLOYEES);
 
         List<Employee> employees = new ArrayList<>();
-        Scanner consoleReader = new Scanner(System.in);
-        for (int i = 0; i < size; i++) {
-            Employee.Builder employee = new Employee.Builder();
+        try (Scanner consoleReader = new Scanner(System.in)) {
+            for (int i = 0; i < size; i++) {
+                Employee.Builder employee = new Employee.Builder();
 
-            System.out.println("\nName of a new employee");
-            employee.name(Validator.validateName(consoleReader.nextLine(), MIN_NAME_SIZE, MAX_SALARY_SIZE));
+                System.out.println("\nName of a new employee");
+                employee.name(Validator.validateName(consoleReader.nextLine(), MIN_NAME_SIZE, MAX_SALARY_SIZE));
 
-            System.out.println("\nDepartment of a new employee");
-            employee.department(Validator.validateDepartment(consoleReader.nextLine()));
+                System.out.println("\nDepartment of a new employee");
+                employee.department(Validator.validateDepartment(consoleReader.nextLine()));
 
-            System.out.println("\nSalary of a new employee");
-            employee.salary(Validator.validateSalary(consoleReader.nextLine(), MAX_SALARY_SIZE));
+                System.out.println("\nSalary of a new employee");
+                employee.salary(Validator.validateSalary(consoleReader.nextLine(), MAX_SALARY_SIZE));
 
-            employees.add(employee.build());
+                employees.add(employee.build());
+            }
         }
-
         return employees;
     }
 
