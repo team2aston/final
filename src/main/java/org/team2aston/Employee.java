@@ -1,5 +1,7 @@
 package org.team2aston;
 
+import java.util.Comparator;
+
 /*
 Сортируемый класс
  */
