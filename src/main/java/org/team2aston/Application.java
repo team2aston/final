@@ -1,15 +1,15 @@
 package org.team2aston;
 
-import java.util.List;
 import java.util.Scanner;
 
+import org.team2aston.collection.CustomList;
 import org.team2aston.Input.InputManager;
 import org.team2aston.Input.Validator;
 
 public class Application {
     private final InputManager inputManager = new InputManager();
     // Список для загрузки из файла, сортировки и сохранения в файл
-    private List<Employee> employees;
+    private CustomList<Employee> employees;
 
     /* Классы для реализации функций
     private final SortingManager sortingManager;

@@ -1,16 +1,21 @@
 package org.team2aston;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.List;
+
+import org.team2aston.collection.CustomList;
 
 public class FileManager {
 
     /*
     Записывает коллекцию сотрудников в файл в режиме ДОБАВЛЕНИЯ
      */
-    public static void appendToFile(List<Employee> employees, String filename, String description) {
+    public static void appendToFile(CustomList<Employee> employees, String filename, String description) {
         Path filePath = Paths.get(filename);
 
         try {

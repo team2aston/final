@@ -1,11 +1,13 @@
 package org.team2aston.Input;
 
-import org.team2aston.Employee;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Scanner;
+
+import org.team2aston.Employee;
+import org.team2aston.collection.CustomArrayList;
+import org.team2aston.collection.CustomList;
 
 public class InputManager {
     private static final int MAX_NUMBER_OF_EMPLOYEES = 10000;
@@ -14,10 +16,10 @@ public class InputManager {
     private static final int MAX_SALARY_SIZE = 1000000;
     RandomEmployeeGenerator reg = new RandomEmployeeGenerator();
 
-    public List<Employee> fillEmployeeList() {
+    public CustomList<Employee> fillEmployeeList() {
         while (true) {
             try{
-                List<Employee> employees;
+                CustomList<Employee> employees;
                 DataInputOption option = showMenuAndGetChoice();
 
                 switch (option) {
@@ -38,14 +40,14 @@ public class InputManager {
     /*
     Формат файла - три строки - один employee. В первой имя, во второй департамент, в третьей зарплата
      */
-    private List<Employee> fillFromFile() throws IOException {
+    private CustomList<Employee> fillFromFile() throws IOException {
         System.out.println("\nFile path");
         try (Scanner consoleReader = new Scanner(System.in)) {
             String path = consoleReader.nextLine();
 
-            List<Employee> employees;
+            CustomList<Employee> employees;
             try (Scanner fileReader = new Scanner(Files.newInputStream(Path.of(path)))) {
-                employees = new ArrayList<>();
+                employees = new CustomArrayList<>();
                 while (fileReader.hasNext()) {
                     Employee.Builder employee = new Employee.Builder();
 
@@ -60,11 +62,11 @@ public class InputManager {
         }
     }
 
-    private List<Employee> fillFromConsole() throws IOException {
+    private CustomList<Employee> fillFromConsole() throws IOException {
         System.out.print("\nNumber of employees");
         int size = Validator.getValidatedInput(0, MAX_NUMBER_OF_EMPLOYEES);
 
-        List<Employee> employees = new ArrayList<>();
+        CustomList<Employee> employees = new CustomArrayList<>();
         try (Scanner consoleReader = new Scanner(System.in)) {
             for (int i = 0; i < size; i++) {
                 Employee.Builder employee = new Employee.Builder();
@@ -84,13 +86,14 @@ public class InputManager {
         return employees;
     }
 
-    private List<Employee> fillRandom() {
+    private CustomList<Employee> fillRandom() {
         System.out.print("\nNumber of employees");
         int size = Validator.getValidatedInput(0, MAX_NUMBER_OF_EMPLOYEES);
 
-        ArrayList<Employee> employees = new ArrayList<Employee>();
-        for(int i = 0; i < size; i++)
+        CustomList<Employee> employees = new CustomArrayList<>();
+        for(int i = 0; i < size; i++) {
             employees.add(reg.generateRandom());
+        }
         return employees;
     }
 
