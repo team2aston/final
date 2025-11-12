@@ -1,11 +1,20 @@
 package org.team2aston;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import org.team2aston.Input.InputManager;
+import org.team2aston.Input.Validator;
+
 public class Application {
+    private final InputManager inputManager = new InputManager();
     private List<Employee> employees; //список для загрузки из файла, сортировки и сохранения в файл
+
+    /* классы для реализации функций
+    private final SortingManager sortingManager;
+    private final SearchManager searchManager;
+    private final FileManager fileManager;
+     */
 
     public void run() {
         System.out.println("Starting sorting application...");
@@ -23,7 +32,7 @@ public class Application {
                 executeOption(option);
 
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error!: " + e.getMessage());
             }
         }
     }
@@ -39,7 +48,7 @@ public class Application {
             case INPUT_DATA -> {
                 //ввод данных из файла
                 //вызов обработчика ввода из файла
-                System.out.println("Status: STUB - functionality in development");
+                employees = inputManager.fillEmployeeList();
                 System.out.println("============================\n");
             }
             case SORT -> {
@@ -102,24 +111,7 @@ public class Application {
         System.out.println("4. Save to file");
         System.out.println("0. Exit");
 
-        int choice = getValidatedInput(0, 4);
+        int choice = Validator.getValidatedInput(0, 4);
         return MenuOption.fromValue(choice);
-    }
-
-    private int getValidatedInput(int min, int max) {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            try {
-                System.out.print("Select option: ");
-                int input = scanner.nextInt();
-                if (input >= min && input <= max) {
-                    return input;
-                }
-                System.out.println("Please enter number from " + min + " to " + max);
-            } catch (InputMismatchException e) {
-                System.out.println("Error: please enter valid number!");
-                scanner.nextLine();
-            }
-        }
     }
 }
