@@ -15,6 +15,7 @@ public class InputManager {
     private static final int MAX_NAME_SIZE = 15;
     private static final int MAX_SALARY_SIZE = 1000000;
     RandomEmployeeGenerator reg = new RandomEmployeeGenerator();
+    private final Scanner consoleScanner = Validator.getConsoleScanner();
 
     public CustomList<Employee> fillEmployeeList() {
         while (true) {
@@ -42,24 +43,22 @@ public class InputManager {
      */
     private CustomList<Employee> fillFromFile() throws IOException {
         System.out.println("\nFile path");
-        try (Scanner consoleReader = new Scanner(System.in)) {
-            String path = consoleReader.nextLine();
+        String path = consoleScanner.nextLine();
 
-            CustomList<Employee> employees;
-            try (Scanner fileReader = new Scanner(Files.newInputStream(Path.of(path)))) {
-                employees = new CustomArrayList<>();
-                while (fileReader.hasNext()) {
-                    Employee.Builder employee = new Employee.Builder();
+        CustomList<Employee> employees;
+        try (Scanner fileReader = new Scanner(Files.newInputStream(Path.of(path)))) {
+            employees = new CustomArrayList<>();
+            while (fileReader.hasNext()) {
+                Employee.Builder employee = new Employee.Builder();
 
-                    employee.name(Validator.validateName(fileReader.nextLine(), MIN_NAME_SIZE, MAX_NAME_SIZE));
-                    employee.department(Validator.validateDepartment(fileReader.nextLine()));
-                    employee.salary(Validator.validateSalary(fileReader.nextLine(), MAX_SALARY_SIZE));
+                employee.name(Validator.validateName(fileReader.nextLine(), MIN_NAME_SIZE, MAX_NAME_SIZE));
+                employee.department(Validator.validateDepartment(fileReader.nextLine()));
+                employee.salary(Validator.validateSalary(fileReader.nextLine(), MAX_SALARY_SIZE));
 
-                    employees.add(employee.build());
-                }
+                employees.add(employee.build());
             }
-            return employees;
         }
+        return employees;
     }
 
     private CustomList<Employee> fillFromConsole() throws IOException {
@@ -67,21 +66,19 @@ public class InputManager {
         int size = Validator.getValidatedInput(0, MAX_NUMBER_OF_EMPLOYEES);
 
         CustomList<Employee> employees = new CustomArrayList<>();
-        try (Scanner consoleReader = new Scanner(System.in)) {
-            for (int i = 0; i < size; i++) {
-                Employee.Builder employee = new Employee.Builder();
+        for (int i = 0; i < size; i++) {
+            Employee.Builder employee = new Employee.Builder();
 
-                System.out.println("\nName of a new employee");
-                employee.name(Validator.validateName(consoleReader.nextLine(), MIN_NAME_SIZE, MAX_SALARY_SIZE));
+            System.out.println("\nName of a new employee");
+            employee.name(Validator.validateName(consoleScanner.nextLine(), MIN_NAME_SIZE, MAX_SALARY_SIZE));
 
-                System.out.println("\nDepartment of a new employee");
-                employee.department(Validator.validateDepartment(consoleReader.nextLine()));
+            System.out.println("\nDepartment of a new employee");
+            employee.department(Validator.validateDepartment(consoleScanner.nextLine()));
 
-                System.out.println("\nSalary of a new employee");
-                employee.salary(Validator.validateSalary(consoleReader.nextLine(), MAX_SALARY_SIZE));
+            System.out.println("\nSalary of a new employee");
+            employee.salary(Validator.validateSalary(consoleScanner.nextLine(), MAX_SALARY_SIZE));
 
-                employees.add(employee.build());
-            }
+            employees.add(employee.build());
         }
         return employees;
     }

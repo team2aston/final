@@ -8,6 +8,7 @@ import org.team2aston.Input.Validator;
 
 public class Application {
     private final InputManager inputManager = new InputManager();
+    private final Scanner consoleScanner = Validator.getConsoleScanner();
     // Список для загрузки из файла, сортировки и сохранения в файл
     private CustomList<Employee> employees;
 
@@ -83,25 +84,19 @@ public class Application {
             return;
         }
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("Enter filename (default: employees.txt): ");
-            String filename = scanner.nextLine().trim();
-
-            // Указан путь к файлу?
-            if (filename.isEmpty()) {
-                filename = "employees.txt";
-            }
-
-            // Добавление описания к данным
-            System.out.print("Enter description: ");
-            String description = scanner.nextLine().trim();
-            if (description.isEmpty()) {
-                description = "Employee data";
-            }
-
-            // Вызов метода добавления в файл
-            FileManager.appendToFile(employees, filename, description);
+        System.out.print("Enter filename (default: employees.txt): ");
+        String filename = consoleScanner.nextLine().trim();
+        if (filename.isEmpty()) {
+            filename = "employees.txt";
         }
+
+        System.out.print("Enter description: ");
+        String description = consoleScanner.nextLine().trim();
+        if (description.isEmpty()) {
+            description = "Employee data";
+        }
+
+        FileManager.appendToFile(employees, filename, description);
 
         System.out.println("============================\n");
     }

@@ -6,23 +6,27 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Validator {
+    private static final Scanner CONSOLE_SCANNER = new Scanner(System.in);
+
     public static int getValidatedInput(int min, int max) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (true) {
-                try {
-                    System.out.print("\nInput: ");
-                    int input = scanner.nextInt();
-                    if (input >= min && input <= max) {
-                        return input;
-                    }
-                    System.out.println("Please enter number from " + min + " to " + max);
-                } catch (InputMismatchException e) {
-                    System.out.println("Error: please enter valid number!");
-                    scanner.nextLine();
+        while (true) {
+            try {
+                System.out.print("\nInput: ");
+                int input = CONSOLE_SCANNER.nextInt();
+                CONSOLE_SCANNER.nextLine();
+                if (input >= min && input <= max) {
+                    return input;
                 }
+                System.out.println("Please enter number from " + min + " to " + max);
+            } catch (InputMismatchException e) {
+                System.out.println("Error: please enter valid number!");
+                CONSOLE_SCANNER.nextLine();
             }
         }
+    }
 
+    public static Scanner getConsoleScanner() {
+        return CONSOLE_SCANNER;
     }
 
     public static String validateName(String name, int min, int max) {
