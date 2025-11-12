@@ -1,11 +1,17 @@
 package org.team2aston;
 
+
+import org.team2aston.Input.Validator;
+import org.team2aston.Search.SearchManager;
+import org.team2aston.Search.SearchOption;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Application {
     private List<Employee> employees; //список для загрузки из файла, сортировки и сохранения в файл
+    private SearchManager<Employee> searchManager= new SearchManager<>();
 
     public void run() {
         System.out.println("Starting sorting application...");
@@ -50,9 +56,7 @@ public class Application {
             }
             case SEARCH -> {
                 //поиск
-                //вызов обработчика поиска
-                System.out.println("Status: STUB - functionality in development");
-                System.out.println("============================\n");
+
             }
             case SAVE_TO_FILE -> {
                 //сохранение в файл
@@ -60,6 +64,55 @@ public class Application {
                 handleSaveToFile();
             }
         }
+    }
+
+    /*
+    Обработчик подсчета элементов по фильтру
+    */
+    private void handleSearchElements() {
+        if (employees == null || employees.isEmpty()) {
+            System.out.println("No data available. Please input data first.");
+            System.out.println("============================\n");
+            return;
+        }
+
+        System.out.println("\n=== Searching parameters ===");
+        System.out.println("1. Name");
+        System.out.println("2. Department");
+        System.out.println("3. Salary");
+        System.out.println("0. Exit");
+
+        Employee.Builder employee = new Employee.Builder();
+        Scanner scanner = new Scanner(System.in);
+        int count = 0;
+
+        switch (SearchOption.fromValue(getValidatedInput(0, 3))) {
+            case NAME:
+                System.out.println("Input name:");
+                count = searchManager.count(
+                        employees.iterator(),
+                        employee.name(scanner.nextLine()).build(),
+                        Employee.Comparators.byName);
+                break;
+            case DEPARTMENT:
+                System.out.println("Input department:");
+                String department = scanner.nextLine();
+                count = searchManager.count(
+                        employees.iterator(),
+                        employee.department(Validator.validateDepartment(department)).build(),
+                        Employee.Comparators.byDepartment);
+                break;
+            case SALARY:
+                System.out.println("Input salary:");
+                String salary = scanner.nextLine();
+                count = searchManager.count(
+                        employees.iterator(),
+                        employee.salary(Validator.validateSalary(salary, Integer.MAX_VALUE)).build(),
+                        Employee.Comparators.byDepartment);
+                break;
+        }
+
+        System.out.println("Found " + count + " entries with given filter");
     }
 
     /*

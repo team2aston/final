@@ -1,4 +1,4 @@
-import main.java.org.team2aston.SearchManager;
+import org.team2aston.Search.SearchManager;
 
 void main() {
     Collection<Integer> arr = new ArrayList<>();

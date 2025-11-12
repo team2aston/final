@@ -1,5 +1,4 @@
-package main.java.org.team2aston;
-
+package org.team2aston.Search;
 /*
 Класс подсчета вхождения объекта
  */
