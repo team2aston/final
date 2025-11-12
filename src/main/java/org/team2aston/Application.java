@@ -56,7 +56,7 @@ public class Application {
             }
             case SEARCH -> {
                 //поиск
-
+                handleSearchElements();
             }
             case SAVE_TO_FILE -> {
                 //сохранение в файл
